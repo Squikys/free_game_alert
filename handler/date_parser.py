@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-def date_validator(time_stamp:str,limit_hours:str)->bool:
+def date_validator(time_stamp:str,limit_hours:float)->bool:
 
     timestamp = datetime.fromisoformat(time_stamp)
     now = datetime.now(timezone.utc).astimezone(timestamp.tzinfo)
