@@ -1,6 +1,4 @@
 import requests
-import dotenv
-import os
 import json
 from handler.date_parser import date_validator
 
@@ -29,6 +27,9 @@ def api_call_by_time(api_key:str,country:str)->list:
                         "title":i["title"],
                         "cut":i["deal"]["cut"],
                         "type":i["type"],
+                        "banner": i["assets"]["banner300"],
+                        "link": i["deal"]["url"],
+                        "store":i["deal"]["shop"]["name"],
                         "price":i["deal"]["price"]["amount"]
                     }
                     resp.append(d)

@@ -1,6 +1,5 @@
 import dotenv
 import os
-from handler.date_parser import date_validator
 from services.api_client import api_call_by_time
 dotenv.load_dotenv()
 API_KEY=os.getenv("API_KEY")
