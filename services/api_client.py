@@ -1,21 +1,29 @@
 import requests
 import json
 from handler.date_parser import date_validator
+import logging
 
+logging.basicConfig(format='%(asctime)s %(message)s')
+
+logger = logging.getLogger()
+
+logger.setLevel(logging.DEBUG)
 
 def api_call_by_time(api_key:str,country:str)->list:
     resp=[]
     running=True
     offset=0
-    limit=5
+    limit=30
     while running:
+        logging.info(f"Running: Current offset = {offset}")
         data={
             "key":api_key,
             "country":country,
             "sort": "-time",
             "mature": True,
             "limit": limit,
-            "offset":offset   
+            "offset":offset,
+            "filter":"N4IgLgngDgpiBcBtAzAGgIwF1UgM4AsB7KXBRdANlSuQFZVkaB2arAXyA"  
         }
         res=requests.get(url="https://api.isthereanydeal.com/deals/v2",params=data)
         offset+=limit
@@ -36,7 +44,6 @@ def api_call_by_time(api_key:str,country:str)->list:
             else:
                 running=False
                 break
-            print("call")
     return resp
 
 def api_call(api_key:str,country:str)->list:
