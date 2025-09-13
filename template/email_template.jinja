@@ -100,16 +100,31 @@
       <div class="store">{{ item.store }}</div>
       <div class="price">
         {% if item.price == 0 %}
+        <span class="original">₹{{ '%.2f' | format(item.regular) }}</span>
         <span class="discounted">Free</span>
         {% else %}
+        <span class="original">₹{{ '%.2f' | format(item.regular) }}</span>
         <span class="discounted">₹{{ '%.2f' | format(item.price) }}</span>
         {% endif %}
         <span>({{ item.cut }}% off)</span>
       </div>
       <div class="deal-footer">
         <div class="expiry">(Expires on {{ item.expiry }})</div>
-        <a class="button" href="{{ item.link }}" target="_blank">Get Deal</a>
+        <a href="{{ item.link }}" target="_blank" style="
+          display: inline-block;
+          padding: 8px 16px;
+          margin-top: 10px;
+          background-color: #1976d2;
+          color: #ffffff !important;
+          text-decoration: none;
+          border-radius: 4px;
+          font-weight: bold;
+          font-family: Arial, sans-serif;
+        ">
+          Get Deal
+        </a>      
       </div>
+
 
     </div>
     {% endfor %}
