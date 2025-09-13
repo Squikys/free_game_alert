@@ -9,7 +9,7 @@ logger = logging.getLogger()
 
 logger.setLevel(logging.DEBUG)
 
-def api_call_by_time(api_key:str,country:str)->list:
+def api_call_by_time(api_key:str,country:str,limit_hours:str)->list:
     resp=[]
     running=True
     offset=0
@@ -25,29 +25,32 @@ def api_call_by_time(api_key:str,country:str)->list:
             "offset":offset,
             "filter":"N4IgLgngDgpiBcBtAzAGgIwF1UgM4AsB7KXBRdANlSuQFZVkaB2arAXyA"  
         }
-        res=requests.get(url="https://api.isthereanydeal.com/deals/v2",params=data)
-        offset+=limit
-        s=json.loads(json.dumps(res.json()))
-        for i in s["list"]:
-            if date_validator(time_stamp=i["deal"]["timestamp"],limit_hours=72):
-                if i["deal"]["price"]["amount"]==0:
-                    d={
-                        "title":i["title"],
-                        "cut":i["deal"]["cut"],
-                        "type":i["type"],
-                        "banner": i["assets"]["banner300"],
-                        "link": i["deal"]["url"],
-                        "store":i["deal"]["shop"]["name"],
-                        "regular":i["deal"]["regular"]["amount"],
-                        "price":i["deal"]["price"]["amount"],
-                        "expiry":formatted_time(i["deal"]["expiry"])
-                    }
-                    resp.append(d)
-            else:
-                running=False
-                break
+        try:
+            res=requests.get(url="https://api.isthereanydeal.com/deals/v2",params=data)
+            offset+=limit
+            s=json.loads(json.dumps(res.json()))
+            for i in s["list"]:
+                if date_validator(time_stamp=i["deal"]["timestamp"],limit_hours=limit_hours):
+                    if i["deal"]["price"]["amount"]==0:
+                        d={
+                            "title":i["title"],
+                            "cut":i["deal"]["cut"],
+                            "type":i["type"],
+                            "banner": i["assets"]["banner300"],
+                            "link": i["deal"]["url"],
+                            "store":i["deal"]["shop"]["name"],
+                            "regular":i["deal"]["regular"]["amount"],
+                            "price":i["deal"]["price"]["amount"],
+                            "expiry":formatted_time(i["deal"]["expiry"])
+                        }
+                        resp.append(d)
+                else:
+                    running=False
+                    break
+        except Exception as e:
+            logging.error(e)
     return resp
-
+'''
 def api_call(api_key:str,country:str)->list:
     resp=[]
     running=True
@@ -79,3 +82,4 @@ def api_call(api_key:str,country:str)->list:
             print("call")
     return resp
 
+'''

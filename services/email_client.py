@@ -1,12 +1,15 @@
+from datetime import datetime, timezone
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import logging
+
+import pytz
 logging.basicConfig(format='%(asctime)s %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-def send_mail(mail:str,passwd:str,receiver:list[str]):
+def send_mail(mail:str,passwd:str,receiver:list[str],body):
     logging.info("Sending emails ......")
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
@@ -16,15 +19,18 @@ def send_mail(mail:str,passwd:str,receiver:list[str]):
     sender_email = mail
     receiver_email = receiver
     print(receiver_email)
-    subject = "Test Email from Python"
-    body = "Hello! This is a test email sent from Python."
+
+    now = datetime.now(timezone.utc).astimezone(pytz.timezone("Asia/Kolkata"))
+    formatted_time=now.strftime("%B %d, %Y ")
+
+    subject = f"{formatted_time} - Free Games Alert"
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = ", ".join(receiver)
     msg['Subject'] = subject
 
-    msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, 'html'))
 
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
