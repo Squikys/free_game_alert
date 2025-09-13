@@ -1,6 +1,6 @@
 import requests
 import json
-from handler.date_parser import date_validator
+from handler.date_parser import date_validator, formatted_time
 import logging
 
 logging.basicConfig(format='%(asctime)s %(message)s')
@@ -13,7 +13,7 @@ def api_call_by_time(api_key:str,country:str)->list:
     resp=[]
     running=True
     offset=0
-    limit=30
+    limit=200
     while running:
         logging.info(f"Running: Current offset = {offset}")
         data={
@@ -29,7 +29,7 @@ def api_call_by_time(api_key:str,country:str)->list:
         offset+=limit
         s=json.loads(json.dumps(res.json()))
         for i in s["list"]:
-            if date_validator(time_stamp=i["deal"]["timestamp"],limit_hours=24):
+            if date_validator(time_stamp=i["deal"]["timestamp"],limit_hours=72):
                 if i["deal"]["price"]["amount"]==0:
                     d={
                         "title":i["title"],
@@ -38,7 +38,9 @@ def api_call_by_time(api_key:str,country:str)->list:
                         "banner": i["assets"]["banner300"],
                         "link": i["deal"]["url"],
                         "store":i["deal"]["shop"]["name"],
-                        "price":i["deal"]["price"]["amount"]
+                        "regular":i["deal"]["regular"]["amount"],
+                        "price":i["deal"]["price"]["amount"],
+                        "expiry":formatted_time(i["deal"]["expiry"])
                     }
                     resp.append(d)
             else:

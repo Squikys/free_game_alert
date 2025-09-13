@@ -7,7 +7,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 def send_mail(mail:str,passwd:str,receiver:list[str]):
-
+    logging.info("Sending emails ......")
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
     username = mail
@@ -15,12 +15,13 @@ def send_mail(mail:str,passwd:str,receiver:list[str]):
 
     sender_email = mail
     receiver_email = receiver
+    print(receiver_email)
     subject = "Test Email from Python"
     body = "Hello! This is a test email sent from Python."
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
-    msg['To'] = receiver_email
+    msg['To'] = ", ".join(receiver)
     msg['Subject'] = subject
 
     msg.attach(MIMEText(body, 'plain'))
