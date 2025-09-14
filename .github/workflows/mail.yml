@@ -1,0 +1,31 @@
+name: Free Games Alert
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.13
+
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13"
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    - name: running the code
+      run: python main.py
+      env:
+          KEY: ${{ secrets.API_KEY }}
+          KEY: ${{ secrets.CLIENT_ID }}
+          KEY: ${{ secrets.CLIENT_SECRET }}
+          KEY: ${{ secrets.COUNTRY }}
+          KEY: ${{ secrets.EMAIL }}
+          KEY: ${{ secrets.EMAILS }}
+          KEY: ${{ secrets.FILTER }}
+          KEY: ${{ secrets.LIMIT }}
+          KEY: ${{ secrets.PASS }}
