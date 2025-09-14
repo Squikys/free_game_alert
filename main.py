@@ -1,3 +1,4 @@
+import logging
 import dotenv
 import os
 from services.api_client import api_call_by_time
@@ -8,21 +9,19 @@ API_KEY=os.getenv("API_KEY")
 COUNTRY=os.getenv("COUNTRY")
 MAIL=os.getenv("EMAIL")
 PASSWD=os.getenv("PASS")
+EMAILS=os.getenv("EMAILS")
+LIMIT=os.getenv("LIMIT")
+FILTER=os.getenv("FILTER")
+logging.basicConfig(format='%(asctime)s %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
 
 if __name__ == "__main__":
-    resp=api_call_by_time(api_key=API_KEY,country=COUNTRY,limit_hours=24)
+    resp=api_call_by_time(api_key=API_KEY,country=COUNTRY,filter=FILTER,limit_hours=int(LIMIT))
     if resp:
         body=email_buildier(response=resp)
-        with open("emails.txt","r") as r:
-            s=r.read()
-        emails=s.split("\n")
+        emails=EMAILS.split("\n")
         send_mail(mail=MAIL,passwd=PASSWD,receiver=emails,body=body)
+    else: logging.info("No free games found")
 
-
-
-
-'''
-print(res.json())
-with open("resp.json",mode="w") as s:
-    s.write(str(json.dumps(res.json())))
-'''
