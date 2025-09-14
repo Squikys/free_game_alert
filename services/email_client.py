@@ -18,7 +18,6 @@ def send_mail(mail:str,passwd:str,receiver:list[str],body):
 
     sender_email = mail
     receiver_email = receiver
-    print(receiver_email)
 
     now = datetime.now(timezone.utc).astimezone(pytz.timezone("Asia/Kolkata"))
     formatted_time=now.strftime("%B %d, %Y ")
