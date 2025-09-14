@@ -20,12 +20,12 @@ jobs:
     - name: running the code
       run: python main.py
       env:
-          KEY: ${{ secrets.API_KEY }}
-          KEY: ${{ secrets.CLIENT_ID }}
-          KEY: ${{ secrets.CLIENT_SECRET }}
-          KEY: ${{ secrets.COUNTRY }}
-          KEY: ${{ secrets.EMAIL }}
-          KEY: ${{ secrets.EMAILS }}
-          KEY: ${{ secrets.FILTER }}
-          KEY: ${{ secrets.LIMIT }}
-          KEY: ${{ secrets.PASS }}
+          API_KEY: ${{ secrets.API_KEY }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          COUNTRY: ${{ secrets.COUNTRY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAILS: ${{ secrets.EMAILS }}
+          FILTER: ${{ secrets.FILTER }}
+          LIMIT: ${{ secrets.LIMIT }}
+          PASS: ${{ secrets.PASS }}
