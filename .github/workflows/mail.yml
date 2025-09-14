@@ -3,7 +3,7 @@ name: Free Games Alert
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 17 * * *'
+    - cron: '30 14 * * *'
 
 
 jobs:
