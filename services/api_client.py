@@ -9,7 +9,7 @@ logger = logging.getLogger()
 
 logger.setLevel(logging.DEBUG)
 
-def api_call_by_time(api_key:str,country:str,limit_hours:str)->list:
+def api_call_by_time(api_key:str,country:str,filter:str,limit_hours:int)->list:
     resp=[]
     running=True
     offset=0
@@ -23,7 +23,7 @@ def api_call_by_time(api_key:str,country:str,limit_hours:str)->list:
             "mature": True,
             "limit": limit,
             "offset":offset,
-            "filter":"N4IgLgngDgpiBcBtAzAGgIwF1UgM4AsB7KXBRdANlSuQFZVkaB2arAXyA"  
+            "filter":filter  
         }
         try:
             res=requests.get(url="https://api.isthereanydeal.com/deals/v2",params=data)
