@@ -1,0 +1,17 @@
+name: free_game_alert
+services:
+    free_game_alert:
+        container_name: free_game_alert
+        build:
+          context: ./
+          dockerfile: ./Dockerfile
+        environment:
+          - API_KEY=${API_KEY}
+          - COUNTRY=${COUNTRY}
+          - MAIL=${MAIL}
+          - PASSWD=${PASSWD}
+          - FILTER=${FILTER}
+          - EMAILS=${EMAILS}
+          - LIMIT=${LIMIT}
+        init: true
+        image: free_game_alert
