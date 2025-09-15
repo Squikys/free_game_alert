@@ -47,6 +47,7 @@ def api_call_by_time(api_key:str,country:str,filter:str,limit_hours:int)->list:
                 else:
                     running=False
                     break
+            logging.info(f"{formatted_time(s["list"][199]["deal"]["timestamp"])}")
         except Exception as e:
             logging.error(e)
     return resp
