@@ -18,10 +18,13 @@ logger.setLevel(logging.DEBUG)
 
 
 if __name__ == "__main__":
+    if not API_KEY or not COUNTRY or not MAIL or not PASSWD or not FILTER or not LIMIT or not EMAILS:
+        logger.error("Missing mandatory environment variables.")
+        exit(1)
     resp=api_call_by_time(api_key=API_KEY,country=COUNTRY,filter=FILTER,limit_hours=int(LIMIT))
     if resp:
         body=email_buildier(response=resp)
         emails=EMAILS.split("\n")
         send_mail(mail=MAIL,passwd=PASSWD,receiver=emails,body=body)
-    else: logging.info("No free games found")
+    else: logger.info("No free games found")
 

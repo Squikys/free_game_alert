@@ -8,8 +8,8 @@ services:
         environment:
           - API_KEY=${API_KEY}
           - COUNTRY=${COUNTRY}
-          - MAIL=${MAIL}
-          - PASSWD=${PASSWD}
+          - EMAIL=${EMAIL}
+          - PASS=${PASS}
           - FILTER=${FILTER}
           - EMAILS=${EMAILS}
           - LIMIT=${LIMIT}
