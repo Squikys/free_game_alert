@@ -1,6 +1,4 @@
 API_KEY=<isthereanydeal api key>
-COUNTRY=<country (two characters)>
-FILTER=<isthereanydeal api filter>
 EMAIL=<smtp email>
 PASS=<smtp email app password>
 LIMIT=<how many hours you want to search>
