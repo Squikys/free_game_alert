@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Free Games Today</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+    }
+
+    .deal {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 15px 0;
+    }
+
+    .deal:last-child {
+      border-bottom: none;
+    }
+
+    .deal img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .deal-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+
+    .price {
+      margin: 5px 0;
+    }
+
+    .price .original {
+      text-decoration: line-through;
+      color: #999;
+      margin-right: 10px;
+    }
+
+    .price .discounted {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .store {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 8px 16px;
+      margin-top: 10px;
+      background-color: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .deal-footer {
+      margin-top: 10px;
+    }
+
+    .deal-footer .expiry {
+      margin-bottom: 8px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>🎮 Free Games Today</h2>
+
+    {% for item in response %}
+    <div class="deal">
+      <img src="{{ item.banner }}" alt="{{ item.title }}">
+      <div class="deal-title">{{ item.title }}</div>
+      <div class="deal-footer">
+        <div class="expiry">(Expires on {{ item.expiry }})</div>
+        <a href="{{ item.link }}" target="_blank" style="
+          display: inline-block;
+          padding: 8px 16px;
+          margin-top: 10px;
+          background-color: #1976d2;
+          color: #ffffff !important;
+          text-decoration: none;
+          border-radius: 4px;
+          font-weight: bold;
+          font-family: Arial, sans-serif;
+        ">
+          Get Deal
+        </a>      
+      </div>
+
+
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+      You're receiving this email because you subscribed to game deal alerts.<br>
+      © 2025 Game Deals Weekly
+    </div>
+  </div>
+</body>
+
+</html>

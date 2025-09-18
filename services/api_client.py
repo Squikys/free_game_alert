@@ -1,14 +1,101 @@
 import requests
 import json
-from handler.date_parser import date_validator, formatted_time
+from handler.date_parser import date_validator, formatted_time,convert_to_ist, is_within_last_24_hours
 import logging
 
+import xml.etree.ElementTree as ET
+import json
+import re
+from xml.sax.saxutils import unescape
+import requests
+import sys
+from pathlib import Path
+from test2 import get_game_assets  # your own function to fetch banner etc.
 logging.basicConfig(format='%(asctime)s %(message)s')
 
 logger = logging.getLogger()
 
 logger.setLevel(logging.DEBUG)
 
+
+def get_game_assets(game_title:str,API_KEY:str):
+
+    lookup_url = "https://api.isthereanydeal.com/games/lookup/v1"
+    params = {
+        "key": API_KEY,
+        "title": game_title
+    }
+    resp = requests.get(lookup_url, params=params)
+    resp.raise_for_status()
+    data = resp.json()
+    if not data.get("found"):
+        print(f"Game not found: {game_title}")
+        return None
+
+    game_info = data["game"]
+    assets = game_info.get("assets", {})
+    banner_url = assets.get("banner300")
+    return banner_url
+
+
+def parse_rss(source:str,API_KEY:str,LIMIT:float)->list:
+    if source.startswith("http://") or source.startswith("https://"):
+        resp = requests.get(source)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+    else:
+        root = ET.parse(source).getroot()
+
+    channel = root.find('channel')
+    if channel is None:
+        for elem in root:
+            if 'channel' in elem.tag:
+                channel = elem
+                break
+
+    extracted_items = []
+    for item in channel.findall('item'):
+        publish_date = item.findtext('pubDate')
+        title = item.findtext('title')
+        desc = item.findtext('description') or ''
+
+        a_tag_match = re.search(r'<a[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+                                desc, re.IGNORECASE | re.DOTALL)
+        game_real_title = None
+        link_to_store = None
+        if a_tag_match:
+            link_to_store = a_tag_match.group(1).strip()
+            game_real_title = unescape(a_tag_match.group(2)).strip()
+
+        expiry_date = None
+        match_full_date = re.search(
+            r'\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s+\d{1,2}\s+\w+\s+\d{4}\s+\d{2}:\d{2}:\d{2}\s+\+\d{4}\b', 
+            desc
+        )
+        if match_full_date:
+            expiry_date = match_full_date.group(0)
+        else:
+            match_simple = re.search(r'(?i)(?:expire|end|until)[^\d]*(\d{1,2}\s\w+\s\d{4})', desc)
+            if match_simple:
+                expiry_date = match_simple.group(1)
+
+
+        if is_within_last_24_hours(publish_date,limit=LIMIT):
+            extracted_items.append({
+                "publish_date": formatted_time(str(convert_to_ist(publish_date))) if publish_date else None,
+                "title": title,
+                "game_real_title": game_real_title,
+                "expiry": formatted_time(str(convert_to_ist(expiry_date))) if expiry_date else None,
+                "link": link_to_store,
+                "banner": get_game_assets(game_title=game_real_title,API_KEY=API_KEY) if game_real_title else None
+            })
+
+    return extracted_items
+
+
+
+
+'''
 def api_call_by_time(api_key:str,country:str,filter:str,limit_hours:int)->list:
     resp=[]
     running=True
@@ -51,7 +138,6 @@ def api_call_by_time(api_key:str,country:str,filter:str,limit_hours:int)->list:
         except Exception as e:
             logging.error(e)
     return resp
-'''
 def api_call(api_key:str,country:str)->list:
     resp=[]
     running=True
