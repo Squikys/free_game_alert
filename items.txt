@@ -1,0 +1,10 @@
+id
+guidislink
+link
+title
+title_detail
+links
+published
+published_parsed
+summary
+summary_detail
