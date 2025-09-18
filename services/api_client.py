@@ -10,7 +10,6 @@ from xml.sax.saxutils import unescape
 import requests
 import sys
 from pathlib import Path
-from test2 import get_game_assets  # your own function to fetch banner etc.
 logging.basicConfig(format='%(asctime)s %(message)s')
 
 logger = logging.getLogger()
